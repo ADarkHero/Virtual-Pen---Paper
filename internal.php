@@ -40,8 +40,8 @@ while($row = $statement->fetch()) {
 	echo "<td>".$count++."</td>";
 	echo "<td>".$row['firstName']."</td>";
 	echo "<td>".$row['lastName']."</td>";
-	echo "<td>".$row['race'].$row['subrace']."</td>";
-	echo "<td>".$row['class'].$row['subclass']."</td>";
+	echo "<td>".$row['race']." ".$row['subrace']."</td>";
+	echo "<td>".$row['class']." ".$row['subclass']."</td>";
 	echo '<td><a href="character.php?id='.$row['id'].'">Edit</a></td>';
 	echo "</tr>";
 }

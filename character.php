@@ -8,10 +8,11 @@ $user = check_user_read("1");
 
 include("templates/header.inc.php");
 
+$readonly = true;
+
 if (isset($user['id'])){	//User logged in?
     if(isset($_GET['id'])){     //User wants to view/edit a character
         $id =  $_GET['id'];
-        $readonly = true;
         $statement = $pdo->prepare("SELECT account FROM characters WHERE id = $id");
         $result = $statement->execute();
         while($row = $statement->fetch()) {
@@ -20,10 +21,10 @@ if (isset($user['id'])){	//User logged in?
 		break;
             }
         }
-    }	
-}
-else {
-    $readonly = true;
+    }
+    else{
+        $readonly = false;
+    }
 }
 
 if($readonly == true){
@@ -102,9 +103,9 @@ if($readonly == true){
 		
 <!-- NAME -->
 			<div class="form-group row">
-			  <div class="col-md-2 form"><input class="form-control" value="First Name" disabled></div>
+			  <div class="col-md-2 form"><input class="form-control" value="First Name" title="First Name" disabled></div>
 			  <div class="col-md-4"><input type="text" name="firstName" class="form-control" placeholder="First Name" value="<?php echo $row['firstName']; ?>"  autofocus></div>
-			  <div class="col-md-2 form"><input class="form-control" value="Last Name" disabled></div>
+			  <div class="col-md-2 form"><input class="form-control" value="Last Name" title="Last Name" disabled></div>
 			  <div class="col-md-4"><input type="text" name="lastName" class="form-control" placeholder="Last Name" value="<?php echo $row['lastName']; ?>"  ></div>
 			</div>
 	
@@ -117,7 +118,7 @@ if($readonly == true){
 			?>
 
 			<div class="form-group row">
-			  <div class="col-md-1 form"><input class="form-control" value="Sex" disabled></div>
+			  <div class="col-md-1 form"><input class="form-control" value="Sex" title="Sex" disabled></div>
 			  <div class="col-md-3"><select name="sex" id="sex" class="form-control" >
 						<?php  
 							foreach ($gender as &$value) {
@@ -130,23 +131,23 @@ if($readonly == true){
 						?>
 						</select>
 				</div>
-			  <div class="col-md-1 form"><input class="form-control" value="Birth" disabled></div>
-			  <div class="col-md-3"><input type="text" name="birthday" class="form-control" placeholder="Birthday" value="<?php echo $row['birthday']; ?>"  ></div>
-			  <div class="col-md-1 form"><input class="form-control" value="Age" disabled></div>
+			  <div class="col-md-1 form"><input class="form-control" value="Birth" title="Birthday" disabled></div>
+			  <div class="col-md-3"><input type="text" name="birthday" class="form-control" placeholder="Birthday"  value="<?php echo $row['birthday']; ?>"  ></div>
+			  <div class="col-md-1 form"><input class="form-control" value="Age" title="Age" disabled></div>
 			  <div class="col-md-3"><input type="text" name="age" class="form-control" placeholder="Age" value="<?php echo $row['age']; ?>"  ></div>
 			</div>
 			
 			
 <!-- WEIGHT, SIZE, EYES, HAIR -->	
 			<div class="form-group row">
-					<div class="col-md-1 form"><input class="form-control" value="Weight" disabled></div>
+					<div class="col-md-1 form"><input class="form-control" value="Weight" title="Weight" disabled></div>
 					<div class="col-md-2"><input type="text" name="weight" class="form-control" placeholder="Weight" value="<?php echo $row['weight']; ?>"  ></div>
-					<div class="col-md-1 form"><input class="form-control" value="Size" disabled></div>
+					<div class="col-md-1 form"><input class="form-control" value="Size" title="Size" disabled></div>
 					<div class="col-md-2"><input type="text" name="size" class="form-control" placeholder="Size" value="<?php echo $row['size']; ?>"  ></div>	
-					<div class="col-md-1 form"><input class="form-control" value="Eyes" disabled></div>
-					<div class="col-md-2"><input type="text" name="eyes" class="form-control" placeholder="Eyecolor" value="<?php echo $row['eyes']; ?>"  ></div>
-					<div class="col-md-1 form"><input class="form-control" value="Hair" disabled></div>
-					<div class="col-md-2"><input type="text" name="hair" class="form-control" placeholder="Hairstyle" value="<?php echo $row['hair']; ?>"  ></div>
+					<div class="col-md-1 form"><input class="form-control" value="Eyes" title="Eyecolor" disabled></div>
+					<div class="col-md-2"><input type="text" name="eyes" class="form-control" placeholder="Eyecolor"  value="<?php echo $row['eyes']; ?>"  ></div>
+					<div class="col-md-1 form"><input class="form-control" value="Hair" title="Hairstyle" disabled></div>
+					<div class="col-md-2"><input type="text" name="hair" class="form-control" placeholder="Hairstyle"  value="<?php echo $row['hair']; ?>"  ></div>
 			</div>
 
 			
@@ -157,7 +158,7 @@ if($readonly == true){
 				$races = $statement->fetchAll();
 			?>
 			<div class="form-group row">
-			<div class="col-md-2 form"><input class="form-control" value="Race" disabled></div>
+			<div class="col-md-2 form"><input class="form-control" value="Race" title="Race" disabled></div>
 			  <div class="col-md-4">
 					<select name="race" id="race" class="form-control" >
 					
@@ -172,7 +173,7 @@ if($readonly == true){
 						?>
 					</select>
 			  </div>
-			  <div class="col-md-2 form"><input class="form-control" value="Sub Race" disabled></div>
+			  <div class="col-md-2 form"><input class="form-control" value="Sub Race" title="Sub Race" disabled></div>
 			  <div class="col-md-4">
 					<select name="subrace" class="form-control" >
 						<?php  
@@ -195,7 +196,7 @@ if($readonly == true){
 				$classes = $statement->fetchAll();
 			?>
 			<div class="row">
-			<div class="col-md-2 form"><input class="form-control" value="Class" disabled></div>
+			<div class="col-md-2 form"><input class="form-control" value="Class" title="Class" disabled></div>
 			  <div class="col-md-4">
 					<select name="class" id="class" class="form-control" >
 						
@@ -210,7 +211,7 @@ if($readonly == true){
 						?>
 					</select>
 			  </div>
-			  <div class="col-md-2 form"><input class="form-control" value="Sub Class" disabled></div>
+			  <div class="col-md-2 form"><input class="form-control" value="Sub Class" title="Sub Race" disabled></div>
 			  <div class="col-md-4">
 					<select name="subclass" class="form-control" >
 						<?php  
