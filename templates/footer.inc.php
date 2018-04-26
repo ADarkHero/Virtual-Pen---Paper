@@ -1,17 +1,7 @@
-<?php 
-/**
- * Dies ist die Fußzeile eurer Seite. Gerne könnt ihr den 'Powered by'-Hinweis entfernen oder beliebig abändern.
- * Falls ihr unser Projekt auf www.php-einfach.de unterstützen möchtet, würde wir uns aber über eine 
- * Verlinkung sehr freuen.
- * 
- * @author: Nils Reimers / http://www.php-einfach.de/experte/php-codebeispiele/loginscript/
- * @license: GNU GPLv3
- */
-?> 
  <hr>
   <div class="container">
   	<footer>
-        <p>(c) <a href="http://www.adarkhero.at" target="_blank">ADarkHero.at</a> 2017, 
+        <p>(c) <a href="http://www.adarkhero.de" target="_blank">ADarkHero.de</a> 2018, 
 		This work is licensed under a <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank">Creative Commons Attribution 4.0 International License</a>.</p>
       </footer>
    </div> 

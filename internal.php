@@ -49,7 +49,7 @@ while($row = $statement->fetch()) {
 </table>
 </div>
 
-<p><a class="btn btn-primary btn-lg" href="character.php?new=true" role="button">Create new Character!</a></p>
+<p><center><a class="btn btn-primary btn-lg" href="character.php?new=true" role="button">Create new Character!</a></center></p>
 
 </div>
 <?php 

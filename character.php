@@ -9,17 +9,25 @@ $user = check_user_read("1");
 include("templates/header.inc.php");
 
 if (isset($user['id'])){	//User logged in?
-	if(isset($_GET['id']) && $_GET['id'] != $user['id']){	//User can only edit his own characters
-		$readonly = true;
-		echo "Read only mode.";
-	}
-	else{
+    if(isset($_GET['id'])){     //User wants to view/edit a character
+        $id =  $_GET['id'];
+        $readonly = true;
+        $statement = $pdo->prepare("SELECT account FROM characters WHERE id = $id");
+        $result = $statement->execute();
+        while($row = $statement->fetch()) {
+            if($row['account'] == $user['id']){	//User can only edit his own characters
 		$readonly = false;
-	}	
+		break;
+            }
+        }
+    }	
 }
 else {
-	$readonly = true;
-	echo "Read only mode.";
+    $readonly = true;
+}
+
+if($readonly == true){
+    echo "Read only mode.";
 }
 ?>
 
