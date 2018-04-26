@@ -81,7 +81,7 @@ if($readonly == true){
 				} 
 				$sql = substr($sql, 0, -21);	//Cut of the last comma and the submit stuff
 				
-				$sql = $sql." WHERE ID = '4'";
+				$sql = $sql." WHERE ID = ".$id;
 			}
 			
 			
