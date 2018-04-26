@@ -53,5 +53,5 @@ while($row = $statement->fetch()) {
 
 </div>
 <?php 
-include("templates/footer.inc.php")
+    include("templates/footer.inc.php")
 ?>
