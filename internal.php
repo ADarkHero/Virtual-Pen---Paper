@@ -31,8 +31,8 @@ Welcome, dude!<br><br>
 <?php 
 $id =  $user['id'];
 $statement = $pdo->prepare("SELECT id, firstName, lastName, class, subclass, race, subrace
-							FROM chars
-							WHERE owner = $id ORDER BY id");
+							FROM characters
+							WHERE account = $id ORDER BY id");
 $result = $statement->execute();
 $count = 1;
 while($row = $statement->fetch()) {

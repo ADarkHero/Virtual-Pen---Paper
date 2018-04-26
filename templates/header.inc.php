@@ -58,7 +58,7 @@
         <?php else: ?>
         <div id="navbar" class="navbar-collapse collapse">
          <ul class="nav navbar-nav navbar-right">  
-			<li><a href="#"><?php echo htmlentities($user['username']); ?></a></li> 
+			<li><a href="#"><?php $user = check_user_read("1"); echo htmlentities($user['username']); ?></a></li> 
          	<li><a href="internal.php">Character Overview</a></li>       
             <li><a href="settings.php">Settings</a></li>
             <li><a href="logout.php">Logout</a></li>

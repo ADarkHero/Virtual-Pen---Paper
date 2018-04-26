@@ -44,8 +44,10 @@ function check_user_read($allowread) {
 	
 
 	$statement = $pdo->prepare("SELECT * FROM users WHERE id = :id");
-	$result = $statement->execute(array('id' => $_SESSION['userid']));
-	$user = $statement->fetch();
+        error_reporting(0);
+        $result = $statement->execute(array('id' => $_SESSION['userid']));
+        $user = $statement->fetch();
+        error_reporting(-1);
 	return $user;
 }
 
