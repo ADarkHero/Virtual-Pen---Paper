@@ -82,7 +82,7 @@
 }
 
 .headerdiceanimation{
-    -webkit-animation: rotation 0.5s infinite linear;
+    -webkit-animation: rotation 0.25s infinite linear;
 }
 
 @-webkit-keyframes rotation {
@@ -92,4 +92,8 @@
     to {
         -webkit-transform: rotate(359deg);
     }
+}
+
+.weaponimage{
+    height: 64px;
 }

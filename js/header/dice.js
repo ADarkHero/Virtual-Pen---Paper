@@ -12,7 +12,7 @@ function rolldice(d){
     dicenumbers(d);
     setTimeout(function() { 
         $(dicediv).removeClass('headerdiceanimation');
-    }, 2000);
+    }, 1000);
 }
 
 function dicenumbers(d){

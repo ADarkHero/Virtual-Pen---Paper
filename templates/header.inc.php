@@ -68,8 +68,8 @@
         <div id="navbar" class="navbar-collapse collapse">
          <ul class="nav navbar-nav navbar-right">  
             <li><a href="#"><span id="diceroll"></span></a></li>
-            <li><a onclick="rolld6()" href="#"><img id="d6" class="headerdice d6" onclick="$(this).addClass('rotated');"src="img/dice/rolling-dices.png"></img></a></li>
-            <li><a onclick="rolld20()" href="#"><img id="d20" class="headerdice d20" src="img/dice/dice-twenty-faces-twenty.png"></img></a></li>
+            <li><a onclick="rolld6()" href="#"><img id="d6" class="headerdice" onclick="$(this).addClass('rotated');"src="img/dice/rolling-dices.svg"></img></a></li>
+            <li><a onclick="rolld20()" href="#"><img id="d20" class="headerdice" src="img/dice/dice-twenty-faces-twenty.svg"></img></a></li>
             <li><a href="internal.php"><?php $user = check_user_read("1"); echo htmlentities($user['username']); ?></a></li> 
             <li><a href="internal.php">Character Overview</a></li>       
             <li><a href="settings.php">Settings</a></li>
