@@ -95,5 +95,12 @@
 }
 
 .weaponimage img{
-    height: 64px!important;
+    height: 64px !important;
+}
+
+.characterpicture img{
+    height: 128px !important; 
+}
+.col-md-2{
+    overflow: hidden;
 }
