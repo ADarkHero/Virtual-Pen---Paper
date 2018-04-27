@@ -1,5 +1,5 @@
 function rolld20(){
-    rolldice(20)
+    rolldice(20);
 }
 
 function rolld6(){

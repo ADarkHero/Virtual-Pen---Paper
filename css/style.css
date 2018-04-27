@@ -94,6 +94,6 @@
     }
 }
 
-.weaponimage{
-    height: 64px;
+.weaponimage img{
+    height: 64px!important;
 }

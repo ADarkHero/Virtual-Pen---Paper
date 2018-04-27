@@ -56,7 +56,7 @@ if(isset($error_msg) && !empty($error_msg)) {
 	<input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required>
 	<div class="checkbox">
 	  <label>
-		<input type="checkbox" value="remember-me" name="stay_signed_in" value="1" checked> Stay signed in
+		<input type="checkbox" value="stay_signed_in" name="stay_signed_in" value="1" checked> Stay signed in
 	  </label>
 	</div>
 	<button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>

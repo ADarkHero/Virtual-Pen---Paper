@@ -111,11 +111,11 @@ while ($row = $statement->fetch()) {
                 <div class="col-md-1 form">
                     <?php
                     if ($row['weapon'] !== "") {
-                        echo '<span id="weapon" class="weaponimage"><img src="img/weapon/' . $row['weapon'] . '" data-toggle="tooltip" title="' . substr($row['weapon'], 0, -4) . '"></img></span>';
+                        echo '<span id="weapon" class="weaponimage"><img src="img/weapon/' . $row['weapon'] . '" data-toggle="tooltip" title="Weapon: ' . substr($row['weapon'], 0, -4) . '"></img></span>';
                     }
                     echo '<br />';
                     if ($row['subweapon'] !== "") {
-                        echo '<span id="subweapon" class="weaponimage"><img src="img/weapon/' . $row['subweapon'] . '" data-toggle="tooltip" title="' . substr($row['subweapon'], 0, -4) . '"></img></span>';
+                        echo '<span id="subweapon" class="weaponimage"><img src="img/weapon/' . $row['subweapon'] . '" data-toggle="tooltip" title="Subweapon: ' . substr($row['subweapon'], 0, -4) . '"></img></span>';
                     }
                     ?>
                 </div>
@@ -360,7 +360,7 @@ while ($row = $statement->fetch()) {
 
 
 
-<script src="js/header/character.js" type="text/javascript"></script>
+<script src="js/character/character.js" type="text/javascript"></script>
 <?php
 include("templates/footer.inc.php")
 ?>

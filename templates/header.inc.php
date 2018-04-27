@@ -54,7 +54,7 @@
 						<td><button type="submit" class="btn btn-success">Login</button></td>
 					</tr>
 					<tr>
-						<td><label style="margin-bottom: 0px; font-weight: normal;"><input type="checkbox" name="angemeldet_bleiben" value="remember-me" title="Stay signed in"  checked="checked" style="margin: 0; vertical-align: middle;" /> <small>Stay signed in</small></label></td>
+						<td><label style="margin-bottom: 0px; font-weight: normal;"><input type="checkbox" name="stay_signed_in" value="stay_signed_in" title="Stay signed in"  checked="checked" style="margin: 0; vertical-align: middle;" /> <small>Stay signed in</small></label></td>
 						<td><small><a href="passwortvergessen.php">Forgot your password?</a></small></td>
 						<td></td>
 					</tr>					
