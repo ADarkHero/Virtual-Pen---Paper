@@ -9,12 +9,19 @@
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <title>ADarkHero RPG</title>
 
-    <!-- Bootstrap core CSS -->
-    <link href="css/bootstrap.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/bootstrap-theme.css"> 
-
     <!-- Custom styles for this template -->
     <link href="css/style.css" rel="stylesheet">
+    
+      <script src="js/jquery-3.2.1.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        
+        <!-- Script for tooltips -->
+  <script>
+        $(document).ready(function(){
+            $('[data-toggle="tooltip"]').tooltip();   
+        });
+    </script>
   </head>
   <body>
   
