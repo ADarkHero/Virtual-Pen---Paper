@@ -67,7 +67,6 @@ $user = check_user();
 
 ?>
 
-<div class="container main-container">
 
 <h1>Settings</h1>
 
@@ -192,9 +191,6 @@ endif;
     	</form>
     </div>
   </div>
-
-</div>
-
 
 </div>
 <?php 

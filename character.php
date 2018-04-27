@@ -2,10 +2,6 @@
 session_start();
 require_once("inc/config.inc.php");
 require_once("inc/functions.inc.php");
-
-//Check if user is logged in
-$user = check_user_read("1");
-
 include("templates/header.inc.php");
 
 $readonly = true;
@@ -31,7 +27,7 @@ if ($readonly == true) {
 }
 ?>
 
-<div class="container main-container">
+
     <?php
 //Is a new character created?		
     if (isset($_GET["new"])) {
@@ -294,10 +290,10 @@ if ($readonly == true) {
     <?php
 }
 ?>
-</div>
 
 
 
-    <?php
+
+<?php
     include("templates/footer.inc.php")
-    ?>
+?>

@@ -9,9 +9,6 @@ $user = check_user();
 include("templates/header.inc.php");
 ?>
 
-<div class="container main-container">
-
-
 Hi <?php echo htmlentities($user['username']); ?>,<br>
 Welcome, dude!<br><br>
 
@@ -51,10 +48,6 @@ while($row = $statement->fetch()) {
 
 <p><center><a class="btn btn-primary btn-lg" href="character.php?new=true" role="button">Create new Character!</a></center></p>
 
-<a href="#" data-toggle="tooltip" title="Hooray!">Hover over me</a>
-
-
-</div>
 <?php 
     include("templates/footer.inc.php")
 ?>

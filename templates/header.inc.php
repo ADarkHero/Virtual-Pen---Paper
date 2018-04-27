@@ -16,6 +16,8 @@
         <script src="js/bootstrap.min.js"></script>
         <link rel="stylesheet" href="css/bootstrap.min.css">
         
+        <script src="js/header/dice.js" type="text/javascript"></script>
+        
         <!-- Script for tooltips -->
   <script>
         $(document).ready(function(){
@@ -65,8 +67,11 @@
         <?php else: ?>
         <div id="navbar" class="navbar-collapse collapse">
          <ul class="nav navbar-nav navbar-right">  
-			<li><a href="internal.php"><?php $user = check_user_read("1"); echo htmlentities($user['username']); ?></a></li> 
-         	<li><a href="internal.php">Character Overview</a></li>       
+            <li><a href="#"><span id="diceroll"></span></a></li>
+            <li><a onclick="rolld6()" href="#"><img id="d6" class="headerdice d6" onclick="$(this).addClass('rotated');"src="img/dice/rolling-dices.png"></img></a></li>
+            <li><a onclick="rolld20()" href="#"><img id="d20" class="headerdice d20" src="img/dice/dice-twenty-faces-twenty.png"></img></a></li>
+            <li><a href="internal.php"><?php $user = check_user_read("1"); echo htmlentities($user['username']); ?></a></li> 
+            <li><a href="internal.php">Character Overview</a></li>       
             <li><a href="settings.php">Settings</a></li>
             <li><a href="logout.php">Logout</a></li>
           </ul>   
@@ -74,3 +79,5 @@
         <?php endif; ?>
       </div>
     </nav>
+      
+      <div class="container main-container">
