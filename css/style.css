@@ -81,6 +81,10 @@
     height: 32px;
 }
 
+.headerlogo {
+    height: 32px;
+}
+
 .headerdiceanimation{
     -webkit-animation: rotation 0.25s infinite linear;
 }
@@ -99,7 +103,7 @@
 }
 
 .characterpicture img{
-    height: 128px !important; 
+    height: 150px !important; 
 }
 .col-md-2{
     overflow: hidden;

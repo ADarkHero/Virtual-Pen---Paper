@@ -36,7 +36,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="index.php"><i class="glyphicon glyphicon-leaf logo"></i> Logo Stuff</a>
+          <a class="navbar-brand" href="index.php"><img class="headerlogo" src="img/frog-prince.svg"></img></a>
         </div>
         <?php if(!is_checked_in()): ?>
         <div id="navbar" class="navbar-collapse collapse">
