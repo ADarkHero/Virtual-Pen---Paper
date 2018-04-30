@@ -19,7 +19,7 @@ include("templates/header.inc.php");
             if (isset($user['id']) && $row['account'] == $user['id']) { //User logged in?
                 $readonly = false;
                 break;
-            } else {                
+            } else {
                 if ($row['publicCharacter'] === "true") { //Is the character public?
                     $readonly = true;
                     break;
@@ -46,107 +46,118 @@ include("templates/header.inc.php");
     ?>
 
 
-<?php
+    <?php
 //Is a new character created?		
-if (isset($_GET["new"])) {
-    echo "<p>Creating new character.</p>";
-    $id = 0;
-}
+    if (isset($_GET["new"])) {
+        echo "<p>Creating new character.</p>";
+        $id = 0;
+    }
 
-if (isset($_GET["id"])) {
-    $id = $_GET["id"];
-}
+    if (isset($_GET["id"])) {
+        $id = $_GET["id"];
+    }
 
 //Was the formular used?
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    //User wants to delete his character
+    if (isset($_POST['deleteCharacter'])) {
+        if ($_POST['deleteCharacter'] === "BANANA") {
+            $statement = $pdo->prepare("DELETE FROM characters WHERE id = $id");
+            $result = $statement->execute();
+            echo "You just deleted your character!";
+        } else {
+            echo "If you really want to delete your character, type the right words. BANANA - in capslock!";
+        }
+    }
+    //User wants to change something
+    else if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 //Let's build an sql statement!
 
-    $sql = "";
+        $sql = "";
 
-    // Build insert into statement	
-    if ($id == 0) {
-        $sql = $sql . "INSERT INTO characters (account, ";
+        // Build insert into statement	
+        if ($id == 0) {
+            $sql = $sql . "INSERT INTO characters (account, ";
 
-        foreach ($_POST as $key => $value) {
-            $sql = $sql . "" . $key . ", ";
+            foreach ($_POST as $key => $value) {
+                $sql = $sql . "" . $key . ", ";
+            }
+
+            $sql = substr($sql, 0, -10); //Cut of the last comma and the submit
+
+            $sql = $sql . ") VALUES (" . $_SESSION['userid'] . ", ";
+
+            foreach ($_POST as $key => $value) {
+                $sql = $sql . "'" . $value . "', ";
+            }
+
+            $sql = substr($sql, 0, -12); //Cut of the last comma and the 'Submit'
+
+            $sql = $sql . ")";
         }
+        //Build update statement
+        else {
+            $sql = $sql . "UPDATE characters SET ";
+            foreach ($_POST as $key => $value) {
+                $sql = $sql . $key . " = '" . $value . "', ";
+            }
+            $sql = substr($sql, 0, -21); //Cut of the last comma and the submit stuff
 
-        $sql = substr($sql, 0, -10); //Cut of the last comma and the submit
-
-        $sql = $sql . ") VALUES (" . $_SESSION['userid'] . ", ";
-
-        foreach ($_POST as $key => $value) {
-            $sql = $sql . "'" . $value . "', ";
+            $sql = $sql . " WHERE ID = " . $id;
         }
-
-        $sql = substr($sql, 0, -12); //Cut of the last comma and the 'Submit'
-
-        $sql = $sql . ")";
-    }
-    //Build update statement
-    else {
-        $sql = $sql . "UPDATE characters SET ";
-        foreach ($_POST as $key => $value) {
-            $sql = $sql . $key . " = '" . $value . "', ";
-        }
-        $sql = substr($sql, 0, -21); //Cut of the last comma and the submit stuff
-
-        $sql = $sql . " WHERE ID = " . $id;
-    }
 
 //        var_dump($sql);
 
 
-    $statement = $pdo->prepare($sql);
+        $statement = $pdo->prepare($sql);
+        $result = $statement->execute();
+
+        updatePictures("mainPicture", $pdo, $id);
+        updatePictures("secondaryPicture", $pdo, $id);
+        updatePictures("tertiaryPicture", $pdo, $id);
+    }
+//Read character data from database
+    $statement = $pdo->prepare("SELECT * FROM characters WHERE id = $id");
     $result = $statement->execute();
 
-    updatePictures("mainPicture", $pdo, $id);
-    updatePictures("secondaryPicture", $pdo, $id);
-    updatePictures("tertiaryPicture", $pdo, $id);
-}
-//Read character data from database
-$statement = $pdo->prepare("SELECT * FROM characters WHERE id = $id");
-$result = $statement->execute();
-
-while ($row = $statement->fetch()) {
-    ?>
+    while ($row = $statement->fetch()) {
+        ?>
 
 
         <form action="" method="post" enctype="multipart/form-data">
             <!-- PICTURES -->
             <div class="form-group row">
                 <div class="col-md-2 form" data-toggle="tooltip" title="It's your character!">
-    <?php
-    if ($row['mainPicture'] !== "") {
-        echo '<span class="characterpicture"><center><img src="img/character/' . $row['mainPicture'] . '" data-toggle="tooltip"></img></center></span>';
-    }
-    ?>
+                    <?php
+                    if ($row['mainPicture'] !== "") {
+                        echo '<span class="characterpicture"><center><img src="img/character/' . $row['mainPicture'] . '" data-toggle="tooltip"></img></center></span>';
+                    }
+                    ?>
                 </div>
                 <div class="col-md-2 form" data-toggle="tooltip" title="It's your character!">
-    <?php
-    if ($row['secondaryPicture'] !== "") {
-        echo '<span class="characterpicture"><center><img src="img/character/' . $row['secondaryPicture'] . '" data-toggle="tooltip" title="It\'s your character!"></img></center></span>';
-    }
-    ?>
+                    <?php
+                    if ($row['secondaryPicture'] !== "") {
+                        echo '<span class="characterpicture"><center><img src="img/character/' . $row['secondaryPicture'] . '" data-toggle="tooltip" title="It\'s your character!"></img></center></span>';
+                    }
+                    ?>
                 </div>
                 <div class="col-md-2 form" data-toggle="tooltip" title="It's your character!">
-    <?php
-    if ($row['tertiaryPicture'] !== "") {
-        echo '<span class="characterpicture"><center><img src="img/character/' . $row['tertiaryPicture'] . '" data-toggle="tooltip" title="It\'s your character!"></img></center></span>';
-    }
-    ?>
+                    <?php
+                    if ($row['tertiaryPicture'] !== "") {
+                        echo '<span class="characterpicture"><center><img src="img/character/' . $row['tertiaryPicture'] . '" data-toggle="tooltip" title="It\'s your character!"></img></center></span>';
+                    }
+                    ?>
                 </div>
                 <div class="col-md-1 form">
-    <?php
-    if ($row['weapon'] !== "") {
-        echo '<span id="weapon" class="weaponimage"><center><img src="img/weapon/' . $row['weapon'] . '" data-toggle="tooltip" title="Weapon: ' . substr($row['weapon'], 0, -4) . '"></img></center></span>';
-    }
-    echo '<br />';
-    if ($row['subweapon'] !== "") {
-        echo '<span id="subweapon" class="weaponimage"><center><img src="img/weapon/' . $row['subweapon'] . '" data-toggle="tooltip" title="Subweapon: ' . substr($row['subweapon'], 0, -4) . '"></img></center></span>';
-    }
-    ?>
+                    <?php
+                    if ($row['weapon'] !== "") {
+                        echo '<span id="weapon" class="weaponimage"><center><img src="img/weapon/' . $row['weapon'] . '" data-toggle="tooltip" title="Weapon: ' . substr($row['weapon'], 0, -4) . '"></img></center></span>';
+                    }
+                    echo '<br />';
+                    if ($row['subweapon'] !== "") {
+                        echo '<span id="subweapon" class="weaponimage"><center><img src="img/weapon/' . $row['subweapon'] . '" data-toggle="tooltip" title="Subweapon: ' . substr($row['subweapon'], 0, -4) . '"></img></center></span>';
+                    }
+                    ?>
                 </div>
                 <div class="col-md-1 form" data-toggle="tooltip" title="">
                 </div>
@@ -229,25 +240,25 @@ while ($row = $statement->fetch()) {
 
 
             <!-- GENDER, BIRTHDAY, AGE -->	
-    <?php
-    $statement = $pdo->prepare("SELECT * FROM sex");
-    $result = $statement->execute();
-    $gender = $statement->fetchAll();
-    ?>
+            <?php
+            $statement = $pdo->prepare("SELECT * FROM sex");
+            $result = $statement->execute();
+            $gender = $statement->fetchAll();
+            ?>
 
             <div class="form-group row">
                 <div class="col-md-2 form" data-toggle="tooltip" title="Sex">
                     <input class="form-control" value="Sex" disabled>
                     <select name="sex" id="sex" class="form-control" >
-    <?php
-    foreach ($gender as &$value) {
-        echo "<option";
-        if ($row['sex'] == $value["name"]) {
-            echo " selected";
-        }
-        echo ">" . $value["name"] . "</option>";
-    }
-    ?>
+                        <?php
+                        foreach ($gender as &$value) {
+                            echo "<option";
+                            if ($row['sex'] == $value["name"]) {
+                                echo " selected";
+                            }
+                            echo ">" . $value["name"] . "</option>";
+                        }
+                        ?>
                     </select>
                 </div>
                 <div class="col-md-2 form" data-toggle="tooltip" title="Birthday">
@@ -289,77 +300,77 @@ while ($row = $statement->fetch()) {
 
 
             <!-- RACE -->			
-    <?php
-    $statement = $pdo->prepare("SELECT * FROM races ORDER BY id");
-    $result = $statement->execute();
-    $races = $statement->fetchAll();
-    ?>
+            <?php
+            $statement = $pdo->prepare("SELECT * FROM races ORDER BY id");
+            $result = $statement->execute();
+            $races = $statement->fetchAll();
+            ?>
             <div class="form-group row">
                 <div class="col-md-3 form" data-toggle="tooltip" title="Race">
                     <input class="form-control" value="Race" disabled>
                     <select name="race" id="race" class="form-control" >
 
-    <?php
-    foreach (array_slice($races, 1) as $key => $value) { //First option (None) gets cut out
-        echo "<option";
-        if ($row['race'] == $value["name"]) {
-            echo " selected";
-        }
-        echo ">" . $value["name"] . "</option>";
-    }
-    ?>
+                        <?php
+                        foreach (array_slice($races, 1) as $key => $value) { //First option (None) gets cut out
+                            echo "<option";
+                            if ($row['race'] == $value["name"]) {
+                                echo " selected";
+                            }
+                            echo ">" . $value["name"] . "</option>";
+                        }
+                        ?>
                     </select>
                 </div>
                 <div class="col-md-3 form" data-toggle="tooltip" title="Subrace">
                     <input class="form-control" value="Subrace" disabled>
                     <select name="subrace" class="form-control" >
-    <?php
-    foreach ($races as &$value) {
-        echo "<option";
-        if ($row['subrace'] == $value["name"]) {
-            echo " selected";
-        }
-        echo ">" . $value["name"] . "</option>";
-    }
-    ?>
+                        <?php
+                        foreach ($races as &$value) {
+                            echo "<option";
+                            if ($row['subrace'] == $value["name"]) {
+                                echo " selected";
+                            }
+                            echo ">" . $value["name"] . "</option>";
+                        }
+                        ?>
                     </select>
                 </div>
 
 
 
                 <!-- CLASS -->			
-    <?php
-    $statement = $pdo->prepare("SELECT * FROM classes ORDER BY id");
-    $result = $statement->execute();
-    $classes = $statement->fetchAll();
-    ?>
+                <?php
+                $statement = $pdo->prepare("SELECT * FROM classes ORDER BY id");
+                $result = $statement->execute();
+                $classes = $statement->fetchAll();
+                ?>
                 <div class="col-md-3 form" data-toggle="tooltip" title="Class">
                     <input class="form-control" value="Class" disabled>
                     <select name="class" id="class" class="form-control" >
 
-    <?php
-    foreach (array_slice($classes, 1) as $key => $value) {
-        echo "<option";
-        if ($row['class'] == $value["name"]) {
-            echo " selected";
-        }
-        echo ">" . $value["name"] . "</option>";
-    }
-    ?>
+                        <?php
+                        foreach (array_slice($classes, 1) as $key => $value) {
+                            echo "<option";
+                            if ($row['class'] == $value["name"]) {
+                                echo " selected";
+                            }
+                            echo ">" . $value["name"] . "</option>";
+                        }
+                        ?>
                     </select>
                 </div>
                 <div class="col-md-3 form" data-toggle="tooltip" title="Subclass">
                     <input class="form-control" value="Subclass" disabled>
                     <select name="subclass" class="form-control" >
-    <?php
-    foreach ($classes as &$value) {
-        echo "<option";
-        if ($row['subclass'] == $value["name"]) {
-            echo " selected";
-        }
-        echo ">" . $value["name"] . "</option>";
-    }
-    ?>
+                        <?php
+                        foreach ($classes as &$value) {
+                            echo "<option";
+                            if ($row['subclass'] == $value["name"]) {
+                                echo " selected";
+                            }
+                            echo ">" . $value["name"] . "</option>";
+                        }
+                        ?>
                     </select>
                 </div>
             </div>
@@ -371,17 +382,17 @@ while ($row = $statement->fetch()) {
                 <div class="col-md-3 form" data-toggle="tooltip" title="Weapon">
                     <input class="form-control" value="Weapon" disabled>
                     <select name="weapon" class="form-control" onchange='changeWeapon(this.value, "weapon")'>
-    <?php
-    weapongenerator($row, "weapon");
-    ?>
+                        <?php
+                        weapongenerator($row, "weapon");
+                        ?>
                     </select>
                 </div>
                 <div class="col-md-3 form" data-toggle="tooltip" title="Subweapon">
                     <input class="form-control" value="Subweapon" disabled>
                     <select name="subweapon" class="form-control" onchange='changeWeapon(this.value, "subweapon")'>
-    <?php
-    weapongenerator($row, "subweapon");
-    ?>
+                        <?php
+                        weapongenerator($row, "subweapon");
+                        ?>
                     </select>
                 </div>
             </div>  
@@ -427,50 +438,80 @@ while ($row = $statement->fetch()) {
                 </div> 
             </div>
 
+            <?php if ($readonly == false) { ?>
+                <!-- PICTURE UPLOAD -->
+                <div class="form-group row">
+                    <div class="col-md-12 form" data-toggle="tooltip" title="Picture upload">
+                        <input class="form-control" value="Picture upload" disabled>
+                    </div>
+                    <div class="col-md-4 form" data-toggle="tooltip" title="Main picture">
+                        <input class="form-control" type="file" name="mainPicture">
+                    </div>
+                    <div class="col-md-4 form" data-toggle="tooltip" title="Secondary picture">
+                        <input class="form-control" type="file" name="secondaryPicture">
+                    </div>
+                    <div class="col-md-4 form" data-toggle="tooltip" title="Tertiary picture">
+                        <input class="form-control" type="file" name="tertiaryPicture">
+                    </div>     
+                </div>
 
-            <!-- PICTURE UPLOAD -->
-            <div class="form-group row">
-                <div class="col-md-12 form" data-toggle="tooltip" title="Picture upload">
-                    <input class="form-control" value="Picture upload" disabled>
-                </div>
-                <div class="col-md-4 form" data-toggle="tooltip" title="Main picture">
-                    <input class="form-control" type="file" name="mainPicture">
-                </div>
-                <div class="col-md-4 form" data-toggle="tooltip" title="Secondary picture">
-                    <input class="form-control" type="file" name="secondaryPicture">
-                </div>
-                <div class="col-md-4 form" data-toggle="tooltip" title="Tertiary picture">
-                    <input class="form-control" type="file" name="tertiaryPicture">
-                </div>     
-            </div>
-
-            <div class="form-group row">
-                <div class="col-md-12 form" data-toggle="tooltip" title="Public character?">
-                    <input class="form-control" value="Is your character public?" disabled>      
-                    <fieldset>
-                        <input class="form-check-input" type="radio" id="publicCharacter" name="publicCharacter" value="true" <?php if ($row['publicCharacter'] === "true") {
+                <div class="form-group row">
+                    <div class="col-md-12 form" data-toggle="tooltip" title="Public character?">
+                        <input class="form-control" value="Is your character public?" disabled>      
+                        <fieldset>
+                            <input class="form-check-input" type="radio" id="publicCharacter" name="publicCharacter" value="true" <?php
+                if ($row['publicCharacter'] === "true") {
+                    echo " checked";
+                }
+                ?>>
+                            <label class="form-check-label" for="publicCharacter">Public character (you can share your character with other persons and in groups)</label><br />
+                            <input class="form-check-input" type="radio" id="publicCharacterFalse" name="publicCharacter" value="false" <?php
+                    if ($row['publicCharacter'] === "false") {
                         echo " checked";
-                    } ?>>
-                        <label class="form-check-label" for="publicCharacter">Public character (you can share your character with other persons and in groups)</label><br />
-                        <input class="form-check-input" type="radio" id="publicCharacterFalse" name="publicCharacter" value="false" <?php if ($row['publicCharacter'] === "false") {
-                        echo " checked";
-                    } ?>>
-                        <label class="form-check-label" for="publicCharacterFalse">NON public character</label>
-                    </fieldset>
-                </div>   
-            </div>
-
-
-            <!-- SUBMIT BUTTON -->	
-            <br />
-
-            <div class="row">
-                <div class="col-md-12">
-    <?php if ($readonly == false) { ?><input type="submit" id="submit" name="submit" class="form-control btn-primary" value="Submit"><?php } ?>
+                    }
+                ?>>
+                            <label class="form-check-label" for="publicCharacterFalse">NON public character</label>
+                        </fieldset>
+                    </div>   
                 </div>
-            </div>
 
-        </form>
+
+
+
+                <!-- SUBMIT BUTTON -->	
+
+                <div class="form-group row">
+                    <div class="col-md-12">
+                        <input type="submit" id="submit" name="submit" class="form-control btn-primary" value="Submit">
+                    </div>
+                </div>
+
+
+
+            </form>
+
+            <br /><br /><br />
+
+
+            <form action="" method="post">
+                <!-- DELETE BUTTON -->
+                <div class="form-group row">
+                    <div class="col-md-12 form" data-toggle="tooltip" title="DANGER ZONE! (Type BANANA to delete character)">
+                        <input class="form-control" value="DANGER ZONE! (Type BANANA to delete character)" disabled>
+                    </div>    
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-md-6">
+                        <input type="text" id="submit" name="deleteCharacter" class="form-control" placeholder="Type BANANA to delete" value="">
+                    </div>
+                    <div class="col-md-6">
+                        <input type="submit" id="delete" name="submit" class="form-control btn-danger" value="DELETE">
+                    </div>
+                </div>
+            </form>
+        <?php } ?>   
+
     </div>
 
     <?php
