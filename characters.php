@@ -31,10 +31,9 @@ $statement = $pdo->prepare("SELECT id, firstName, lastName, class, subclass, rac
 							FROM characters
 							WHERE account = $id ORDER BY id");
 $result = $statement->execute();
-$count = 1;
 while($row = $statement->fetch()) {
 	echo "<tr>";
-	echo "<td>".$count++."</td>";
+	echo "<td>".$row['id']."</td>";
 	echo "<td>".$row['firstName']."</td>";
 	echo "<td>".$row['lastName']."</td>";
 	echo "<td>".$row['race']." ".$row['subrace']."</td>";

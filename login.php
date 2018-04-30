@@ -27,7 +27,7 @@ if(isset($_POST['username']) && isset($_POST['password'])) {
 			setcookie("securitytoken",$securitytoken,time()+(3600*24*365)); //Valid for 1 year
 		}
 
-		header("location: internal.php");
+		header("location: characters.php");
 		exit;
 	} else {
 		$error_msg =  "E-Mail or password were wrong.<br><br>";

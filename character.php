@@ -7,121 +7,14 @@ include("templates/header.inc.php");
 ?>
 <div class="container-fluid">
     <?php
-    $readonly = true;
-    $notPublic = false;
+        if(!isset($user['id'])){
+            $user = "";
+        }
+        $readonly = checkViewRights("characters", $pdo, $user);
+        $statement = databaseFun("characters", $pdo);
 
-    if (isset($_GET['id'])) {     //User wants to view/edit a character
-        $id = $_GET['id'];
-
-        $statement = $pdo->prepare("SELECT publicCharacter, account FROM characters WHERE id = $id");
-        $result = $statement->execute();
         while ($row = $statement->fetch()) {
-            if (isset($user['id']) && $row['account'] == $user['id']) { //User logged in?
-                $readonly = false;
-                break;
-            } else {
-                if ($row['publicCharacter'] === "true") { //Is the character public?
-                    $readonly = true;
-                    break;
-                } else {
-                    $notPublic = true;
-                    break;
-                }
-            }
-        }
-    } else {
-        $readonly = false;
-    }
-
-
-
-
-
-    if ($notPublic) {
-        exit("Character not public!");
-    }
-    if ($readonly) {
-        echo "Read only mode.";
-    }
     ?>
-
-
-    <?php
-//Is a new character created?		
-    if (isset($_GET["new"])) {
-        echo "<p>Creating new character.</p>";
-        $id = 0;
-    }
-
-    if (isset($_GET["id"])) {
-        $id = $_GET["id"];
-    }
-
-//Was the formular used?
-    //User wants to delete his character
-    if (isset($_POST['deleteCharacter'])) {
-        if ($_POST['deleteCharacter'] === "BANANA") {
-            $statement = $pdo->prepare("DELETE FROM characters WHERE id = $id");
-            $result = $statement->execute();
-            echo "You just deleted your character!";
-        } else {
-            echo "If you really want to delete your character, type the right words. BANANA - in capslock!";
-        }
-    }
-    //User wants to change something
-    else if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
-//Let's build an sql statement!
-
-        $sql = "";
-
-        // Build insert into statement	
-        if ($id == 0) {
-            $sql = $sql . "INSERT INTO characters (account, ";
-
-            foreach ($_POST as $key => $value) {
-                $sql = $sql . "" . $key . ", ";
-            }
-
-            $sql = substr($sql, 0, -10); //Cut of the last comma and the submit
-
-            $sql = $sql . ") VALUES (" . $_SESSION['userid'] . ", ";
-
-            foreach ($_POST as $key => $value) {
-                $sql = $sql . "'" . $value . "', ";
-            }
-
-            $sql = substr($sql, 0, -12); //Cut of the last comma and the 'Submit'
-
-            $sql = $sql . ")";
-        }
-        //Build update statement
-        else {
-            $sql = $sql . "UPDATE characters SET ";
-            foreach ($_POST as $key => $value) {
-                $sql = $sql . $key . " = '" . $value . "', ";
-            }
-            $sql = substr($sql, 0, -21); //Cut of the last comma and the submit stuff
-
-            $sql = $sql . " WHERE ID = " . $id;
-        }
-
-//        var_dump($sql);
-
-
-        $statement = $pdo->prepare($sql);
-        $result = $statement->execute();
-
-        updatePictures("mainPicture", $pdo, $id);
-        updatePictures("secondaryPicture", $pdo, $id);
-        updatePictures("tertiaryPicture", $pdo, $id);
-    }
-//Read character data from database
-    $statement = $pdo->prepare("SELECT * FROM characters WHERE id = $id");
-    $result = $statement->execute();
-
-    while ($row = $statement->fetch()) {
-        ?>
 
 
         <form action="" method="post" enctype="multipart/form-data">
@@ -130,21 +23,21 @@ include("templates/header.inc.php");
                 <div class="col-md-2 form" data-toggle="tooltip" title="It's your character!">
                     <?php
                     if ($row['mainPicture'] !== "") {
-                        echo '<span class="characterpicture"><center><img src="img/character/' . $row['mainPicture'] . '" data-toggle="tooltip"></img></center></span>';
+                        echo '<span class="characterpicture"><center><img src="img/characters/' . $row['mainPicture'] . '" data-toggle="tooltip"></img></center></span>';
                     }
                     ?>
                 </div>
                 <div class="col-md-2 form" data-toggle="tooltip" title="It's your character!">
                     <?php
                     if ($row['secondaryPicture'] !== "") {
-                        echo '<span class="characterpicture"><center><img src="img/character/' . $row['secondaryPicture'] . '" data-toggle="tooltip" title="It\'s your character!"></img></center></span>';
+                        echo '<span class="characterpicture"><center><img src="img/characters/' . $row['secondaryPicture'] . '" data-toggle="tooltip" title="It\'s your character!"></img></center></span>';
                     }
                     ?>
                 </div>
                 <div class="col-md-2 form" data-toggle="tooltip" title="It's your character!">
                     <?php
                     if ($row['tertiaryPicture'] !== "") {
-                        echo '<span class="characterpicture"><center><img src="img/character/' . $row['tertiaryPicture'] . '" data-toggle="tooltip" title="It\'s your character!"></img></center></span>';
+                        echo '<span class="characterpicture"><center><img src="img/characters/' . $row['tertiaryPicture'] . '" data-toggle="tooltip" title="It\'s your character!"></img></center></span>';
                     }
                     ?>
                 </div>
@@ -221,17 +114,17 @@ include("templates/header.inc.php");
 
             <!-- NAME -->
             <div class="form-group row">
-                <div class="col-md-3 form" data-toggle="tooltip" title="First Name">
+                <div class="col-md-4 form" data-toggle="tooltip" title="First Name">
                     <input class="form-control" value="First Name" disabled>
                     <input type="text" name="firstName" class="form-control" placeholder="First Name" value="<?php echo $row['firstName']; ?>"  autofocus>
                 </div>
 
-                <div class="col-md-2 form" data-toggle="tooltip" title="Title">
+                <div class="col-md-4 form" data-toggle="tooltip" title="Title">
                     <input class="form-control" value="Title" disabled>
                     <input type="text" name="title" class="form-control" placeholder="Title" value="<?php echo $row['title']; ?>"  >
                 </div>
 
-                <div class="col-md-3 form" data-toggle="tooltip" title="Last Name">
+                <div class="col-md-4 form" data-toggle="tooltip" title="Last Name">
                     <input class="form-control" value="Last Name" disabled>
                     <input type="text" name="lastName" class="form-control" placeholder="Last Name" value="<?php echo $row['lastName']; ?>"  >
                 </div>
@@ -247,7 +140,7 @@ include("templates/header.inc.php");
             ?>
 
             <div class="form-group row">
-                <div class="col-md-2 form" data-toggle="tooltip" title="Sex">
+                <div class="col-md-4 form" data-toggle="tooltip" title="Sex">
                     <input class="form-control" value="Sex" disabled>
                     <select name="sex" id="sex" class="form-control" >
                         <?php
@@ -261,12 +154,12 @@ include("templates/header.inc.php");
                         ?>
                     </select>
                 </div>
-                <div class="col-md-2 form" data-toggle="tooltip" title="Birthday">
+                <div class="col-md-4 form" data-toggle="tooltip" title="Birthday">
                     <input class="form-control" value="Birthday" disabled>
                     <input type="text" name="birthday" class="form-control" placeholder="Birthday"  value="<?php echo $row['birthday']; ?>"  >
                 </div>
 
-                <div class="col-md-2 form" data-toggle="tooltip" title="Age">
+                <div class="col-md-4 form" data-toggle="tooltip" title="Age">
                     <input class="form-control" value="Age" disabled>
                     <input type="text" name="age" class="form-control" placeholder="Age" value="<?php echo $row['age']; ?>"  >
                 </div>
@@ -276,22 +169,22 @@ include("templates/header.inc.php");
 
             <!-- WEIGHT, SIZE, EYES, HAIR -->	
             <div class="form-group row">
-                <div class="col-md-2 form" data-toggle="tooltip" title="Weight">
+                <div class="col-md-3 form" data-toggle="tooltip" title="Weight">
                     <input class="form-control" value="Weight" disabled>
                     <input type="text" name="weight" class="form-control" placeholder="Weight" value="<?php echo $row['weight']; ?>"  >
                 </div>
 
-                <div class="col-md-2 form" data-toggle="tooltip" title="Size">
+                <div class="col-md-3 form" data-toggle="tooltip" title="Size">
                     <input class="form-control" value="Size" disabled>
                     <input type="text" name="size" class="form-control" placeholder="Size" value="<?php echo $row['size']; ?>"  >
                 </div>
 
-                <div class="col-md-2 form" data-toggle="tooltip" title="Eyecolor">
+                <div class="col-md-3 form" data-toggle="tooltip" title="Eyecolor">
                     <input class="form-control" value="Eyecolor" disabled>
                     <input type="text" name="eyes" class="form-control" placeholder="Eyecolor"  value="<?php echo $row['eyes']; ?>"  >
                 </div>
 
-                <div class="col-md-2 form" data-toggle="tooltip" title="Hairstyle">
+                <div class="col-md-3 form" data-toggle="tooltip" title="Hairstyle">
                     <input class="form-control" value="Hairstyle" disabled>
                     <input type="text" name="hair" class="form-control" placeholder="Hairstyle"  value="<?php echo $row['hair']; ?>"  >
                 </div>
@@ -379,7 +272,7 @@ include("templates/header.inc.php");
 
             <!-- WEAPON -->
             <div class="form-group row">
-                <div class="col-md-3 form" data-toggle="tooltip" title="Weapon">
+                <div class="col-md-6 form" data-toggle="tooltip" title="Weapon">
                     <input class="form-control" value="Weapon" disabled>
                     <select name="weapon" class="form-control" onchange='changeWeapon(this.value, "weapon")'>
                         <?php
@@ -387,7 +280,7 @@ include("templates/header.inc.php");
                         ?>
                     </select>
                 </div>
-                <div class="col-md-3 form" data-toggle="tooltip" title="Subweapon">
+                <div class="col-md-6 form" data-toggle="tooltip" title="Subweapon">
                     <input class="form-control" value="Subweapon" disabled>
                     <select name="subweapon" class="form-control" onchange='changeWeapon(this.value, "subweapon")'>
                         <?php
@@ -441,6 +334,7 @@ include("templates/header.inc.php");
             <?php if ($readonly == false) { ?>
                 <!-- PICTURE UPLOAD -->
                 <div class="form-group row">
+                    <?php if (isset($_GET["id"])) { ?>
                     <div class="col-md-12 form" data-toggle="tooltip" title="Picture upload">
                         <input class="form-control" value="Picture upload" disabled>
                     </div>
@@ -453,24 +347,30 @@ include("templates/header.inc.php");
                     <div class="col-md-4 form" data-toggle="tooltip" title="Tertiary picture">
                         <input class="form-control" type="file" name="tertiaryPicture">
                     </div>     
+                    <?php } else {?>
+                    <div class="col-md-12 form" data-toggle="tooltip" title="Please save your character, before uploading pictures.">
+                        <input class="form-control" value="Please save your character, before uploading pictures." disabled>
+                    </div>
+                    <?php }?>
                 </div>
 
+                <!-- PUBLIC CHARACTER? -->
                 <div class="form-group row">
                     <div class="col-md-12 form" data-toggle="tooltip" title="Public character?">
                         <input class="form-control" value="Is your character public?" disabled>      
                         <fieldset>
-                            <input class="form-check-input" type="radio" id="publicCharacter" name="publicCharacter" value="true" <?php
-                if ($row['publicCharacter'] === "true") {
+                            <input class="form-check-input" type="radio" id="publicEntry" name="publicEntry" value="true" <?php
+                if ($row['publicEntry'] === "true") {
                     echo " checked";
                 }
                 ?>>
-                            <label class="form-check-label" for="publicCharacter">Public character (you can share your character with other persons and in groups)</label><br />
-                            <input class="form-check-input" type="radio" id="publicCharacterFalse" name="publicCharacter" value="false" <?php
-                    if ($row['publicCharacter'] === "false") {
+                            <label class="form-check-label" for="publicEntry">Public character (you can share your character with other persons and in groups)</label><br />
+                            <input class="form-check-input" type="radio" id="publicEntryFalse" name="publicEntry" value="false" <?php
+                    if ($row['publicEntry'] === "false") {
                         echo " checked";
                     }
                 ?>>
-                            <label class="form-check-label" for="publicCharacterFalse">NON public character</label>
+                            <label class="form-check-label" for="publicEntry">NON public character</label>
                         </fieldset>
                     </div>   
                 </div>
@@ -499,11 +399,8 @@ include("templates/header.inc.php");
                     <div class="col-md-12 form" data-toggle="tooltip" title="DANGER ZONE! (Type BANANA to delete character)">
                         <input class="form-control" value="DANGER ZONE! (Type BANANA to delete character)" disabled>
                     </div>    
-                </div>
-
-                <div class="form-group row">
                     <div class="col-md-6">
-                        <input type="text" id="submit" name="deleteCharacter" class="form-control" placeholder="Type BANANA to delete" value="">
+                        <input type="text" id="submit" name="deleteEntry" class="form-control" placeholder="Type BANANA to delete" value="">
                     </div>
                     <div class="col-md-6">
                         <input type="submit" id="delete" name="submit" class="form-control btn-danger" value="DELETE">
