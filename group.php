@@ -74,14 +74,14 @@ include("templates/header.inc.php");
             $sql = $sql."ORDER BY lastName";
             $statement = $pdo->prepare($sql);
             $result = $statement->execute();
-            while($row = $statement->fetch()) {
+            while($raw = $statement->fetch()) {
                     echo "<tr>";
-                    echo "<td>".$row['id']."</td>";
-                    echo "<td>".$row['firstName']."</td>";
-                    echo "<td>".$row['lastName']."</td>";
-                    echo "<td>".$row['race']." ".$row['subrace']."</td>";
-                    echo "<td>".$row['class']." ".$row['subclass']."</td>";
-                    echo '<td><a href="character.php?id='.$row['id'].'">View</a></td>';
+                    echo "<td>".$raw['id']."</td>";
+                    echo "<td>".$raw['firstName']."</td>";
+                    echo "<td>".$raw['lastName']."</td>";
+                    echo "<td>".$raw['race']." ".$raw['subrace']."</td>";
+                    echo "<td>".$raw['class']." ".$raw['subclass']."</td>";
+                    echo '<td><a href="character.php?id='.$raw['id'].'">View</a></td>';
                     echo "</tr>";
             }
             ?>

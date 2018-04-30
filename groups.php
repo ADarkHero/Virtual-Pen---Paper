@@ -28,8 +28,8 @@ $sql = "SELECT id FROM characters  WHERE account = '".$id."' ORDER BY id";
 $statement = $pdo->prepare($sql);
 $result = $statement->execute();
 $sql = "SELECT id, groupname FROM groups  WHERE ";
-while($row = $statement->fetch()) {
-	$sql = $sql."members LIKE '%".$row['id']."%' OR ";
+while($raw = $statement->fetch()) {
+	$sql = $sql."members LIKE '%".$raw['id']."%' OR ";
 }
 $sql = $sql." account = '".$id."' ORDER BY id";
 $statement = $pdo->prepare($sql);
