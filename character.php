@@ -359,7 +359,7 @@ include("templates/header.inc.php");
                     <div class="col-md-12 form" data-toggle="tooltip" title="Public character?">
                         <input class="form-control" value="Is your character public?" disabled>      
                         <fieldset>
-                            <input class="form-check-input" type="radio" id="publicEntry" name="publicEntry" value="true" <?php
+                            <input class="form-check-input" type="radio" id="publicEntry" name="publicEntry" value="true" <?php                            
                 if ($row['publicEntry'] === "true") {
                     echo " checked";
                 }
@@ -370,7 +370,7 @@ include("templates/header.inc.php");
                         echo " checked";
                     }
                 ?>>
-                            <label class="form-check-label" for="publicEntry">NON public character</label>
+                            <label class="form-check-label" for="publicEntryFalse">NON public character</label>
                         </fieldset>
                     </div>   
                 </div>
