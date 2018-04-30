@@ -124,7 +124,7 @@ function checkViewRights($dbname, $pdo, $user) {
             if (isset($user['id']) && $row['account'] == $user['id']) { //The logged in user owns the entry
                 $readonly = false;
                 break;
-            } else if ($row['publicEntry'] === "true") { //Is the character public?
+            } else if ($row['publicEntry'] === "true") { //Is the character/group public?
                 $readonly = true;
                 break;
             } else if(strpos_arr($row['members'], $owch) !== false){ //Is the character part of the group?
