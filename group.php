@@ -20,21 +20,21 @@ include("templates/header.inc.php");
                 <div class="col-md-4 form" data-toggle="tooltip" title="It's your group pic!">
                     <?php
                     if ($row['mainPicture'] !== "") {
-                        echo '<span class="characterpicture"><center><img src="img/groups/' . $row['mainPicture'] . '" data-toggle="tooltip" title="It\'s your group pic!"></img></center></span>';
+                        echo '<a href="img/groups/' . $row['mainPicture'] . '" target="_blank" class="characterpicture"><center><img src="img/groups/' . $row['mainPicture'] . '" data-toggle="tooltip" title="It\'s your group pic!"></img></center></a>';
                     }
                     ?>
                 </div>
                 <div class="col-md-4 form" data-toggle="tooltip" title="It's your character!">
                     <?php
                     if ($row['secondaryPicture'] !== "") {
-                        echo '<span class="characterpicture"><center><img src="img/groups/' . $row['secondaryPicture'] . '" data-toggle="tooltip" title="It\'s your group pic!"></img></center></span>';
+                        echo '<a href="img/groups/' . $row['secondaryPicture'] . '" target="_blank" class="characterpicture"><center><img src="img/groups/' . $row['secondaryPicture'] . '" data-toggle="tooltip" title="It\'s your group pic!"></img></center></a>';
                     }
                     ?>
                 </div>
                 <div class="col-md-4 form" data-toggle="tooltip" title="It's your character!">
                     <?php
                     if ($row['tertiaryPicture'] !== "") {
-                        echo '<span class="characterpicture"><center><img src="img/groups/' . $row['tertiaryPicture'] . '" data-toggle="tooltip" title="It\'s your group pic!"></img></center></span>';
+                        echo '<a href="img/groups/' . $row['tertiaryPicture'] . '" target="_blank" class="characterpicture"><center><img src="img/groups/' . $row['tertiaryPicture'] . '" data-toggle="tooltip" title="It\'s your group pic!"></img></center></a>';
                     }
                     ?>
                 </div>
