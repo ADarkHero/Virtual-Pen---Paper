@@ -105,10 +105,10 @@ function checkViewRights($dbname, $pdo, $user) {
             $statement = $pdo->prepare($sql);
             $result = $statement->execute();
             while ($raw = $statement->fetch()) {
-                $owncharacters = $owncharacters.$raw['id'].", ";
+                $owncharacters = $owncharacters.$raw['id'].",, ";
             }
             $owncharacters = substr($owncharacters, 0, -3); //Cut last comma
-            $owch = explode(", ", $owncharacters);    
+            $owch = explode(", ", $owncharacters);  
             
             
             $sql = "SELECT publicEntry, account, members FROM " . $dbname . " WHERE id = " . $id;
