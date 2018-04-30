@@ -53,6 +53,40 @@ include("templates/header.inc.php");
                     <input type="text" name="members" class="form-control" placeholder="Members" value="<?php echo $row['members']; ?>"  >
                 </div>
             </div>
+            <?php if (isset($_GET["id"])) { ?>
+            <table class="table">
+            <tr>
+                    <th>#</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Class</th>
+                    <th>Race</th>
+                    <th>View</th>
+            </tr>
+            <?php 
+            $id =  $user['id'];
+            $sql = "SELECT id, firstName, lastName, class, subclass, race, subrace FROM characters WHERE ";
+            $characterList = explode(", ", $row['members']);
+            foreach($characterList as &$value){
+                $sql = $sql."id = '".$value."' OR ";
+            }
+            $sql = substr($sql, 0, -3); //Cut last OR
+            $sql = $sql."ORDER BY lastName";
+            $statement = $pdo->prepare($sql);
+            $result = $statement->execute();
+            while($row = $statement->fetch()) {
+                    echo "<tr>";
+                    echo "<td>".$row['id']."</td>";
+                    echo "<td>".$row['firstName']."</td>";
+                    echo "<td>".$row['lastName']."</td>";
+                    echo "<td>".$row['race']." ".$row['subrace']."</td>";
+                    echo "<td>".$row['class']." ".$row['subclass']."</td>";
+                    echo '<td><a href="character.php?id='.$row['id'].'">View</a></td>';
+                    echo "</tr>";
+            }
+            ?>
+            </table>
+            <?php } ?>
             
             <?php if ($readonly == false) { ?>
 
