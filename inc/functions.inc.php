@@ -98,20 +98,40 @@ function checkViewRights($dbname, $pdo, $user) {
 
     if (isset($_GET['id'])) {     //User wants to view/edit a character
         $id = $_GET['id'];
-
-        $sql = "SELECT publicEntry, account FROM " . $dbname . " WHERE id = " . $id;
+        $owncharacters = "";
+        
+        if($dbname == "groups"){            
+            $sql = "SELECT id FROM characters WHERE account = " . $user['id'];
+            $statement = $pdo->prepare($sql);
+            $result = $statement->execute();
+            while ($raw = $statement->fetch()) {
+                $owncharacters = $owncharacters.$raw['id'].", ";
+            }
+            $owncharacters = substr($owncharacters, 0, -3); //Cut last comma
+            $owch = explode(", ", $owncharacters);    
+            
+            
+            $sql = "SELECT publicEntry, account, members FROM " . $dbname . " WHERE id = " . $id;
+        }else{
+            $sql = "SELECT publicEntry, account FROM " . $dbname . " WHERE id = " . $id;
+        }
+        
         $statement = $pdo->prepare($sql);
         $result = $statement->execute();
+                  
 
         while ($row = $statement->fetch()) {
-            if (isset($user['id']) && $row['account'] == $user['id']) { //User logged in?
+            if (isset($user['id']) && $row['account'] == $user['id']) { //The logged in user owns the entry
                 $readonly = false;
                 break;
-            } else if ($row['publicEntry'] === "true") {
-                //Is the character public?
+            } else if ($row['publicEntry'] === "true") { //Is the character public?
                 $readonly = true;
                 break;
-            } else {
+            } else if(strpos_arr($row['members'], $owch) !== false){ //Is the character part of the group?
+                $readonly = true;
+                break;
+            } 
+            else {
                 $notPublic = true;
                 break;
             }
@@ -236,3 +256,19 @@ function updatePictures($pictoupdate, $pdo, $id, $dbname) {
             error_reporting(-1);
         }
     }
+    
+    
+    
+    
+    
+    
+/* strpos that takes an array of values to match against a string
+ * note the stupid argument order (to match strpos)
+ */
+function strpos_arr($haystack, $needle) {
+    if(!is_array($needle)) $needle = array($needle);
+    foreach($needle as $what) {
+        if(($pos = strpos($haystack, $what))!==false) return $pos;
+    }
+    return false;
+}
