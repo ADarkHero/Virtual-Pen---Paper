@@ -20,21 +20,21 @@ include("templates/header.inc.php");
                 <div class="col-md-4 form" data-toggle="tooltip" title="It's your group pic!">
                     <?php
                     if ($row['mainPicture'] !== "") {
-                        echo '<a href="img/groups/' . $row['mainPicture'] . '" target="_blank" class="characterpicture"><center><img src="img/groups/' . $row['mainPicture'] . '" data-toggle="tooltip" title="It\'s your group pic!"></img></center></a>';
+                        echo '<a href="' . $row['mainPicture'] . '" target="_blank" class="characterpicture"><center><img src="' . $row['mainPicture'] . '" data-toggle="tooltip" title="It\'s your group pic!"></img></center></a>';
                     }
                     ?>
                 </div>
                 <div class="col-md-4 form" data-toggle="tooltip" title="It's your character!">
                     <?php
                     if ($row['secondaryPicture'] !== "") {
-                        echo '<a href="img/groups/' . $row['secondaryPicture'] . '" target="_blank" class="characterpicture"><center><img src="img/groups/' . $row['secondaryPicture'] . '" data-toggle="tooltip" title="It\'s your group pic!"></img></center></a>';
+                        echo '<a href="' . $row['secondaryPicture'] . '" target="_blank" class="characterpicture"><center><img src="' . $row['secondaryPicture'] . '" data-toggle="tooltip" title="It\'s your group pic!"></img></center></a>';
                     }
                     ?>
                 </div>
                 <div class="col-md-4 form" data-toggle="tooltip" title="It's your character!">
                     <?php
                     if ($row['tertiaryPicture'] !== "") {
-                        echo '<a href="img/groups/' . $row['tertiaryPicture'] . '" target="_blank" class="characterpicture"><center><img src="img/groups/' . $row['tertiaryPicture'] . '" data-toggle="tooltip" title="It\'s your group pic!"></img></center></a>';
+                        echo '<a href="' . $row['tertiaryPicture'] . '" target="_blank" class="characterpicture"><center><img src="' . $row['tertiaryPicture'] . '" data-toggle="tooltip" title="It\'s your group pic!"></img></center></a>';
                     }
                     ?>
                 </div>
@@ -121,7 +121,7 @@ include("templates/header.inc.php");
                     echo " checked";
                 }
                 ?>>
-                            <label class="form-check-label" for="publicEntry">Public group (you can share your group with other persons and in groups)</label><br />
+                            <label class="form-check-label" for="publicEntry">Public group (You can share your group with others)</label><br />
                             <input class="form-check-input" type="radio" id="publicEntryFalse" name="publicEntry" value="false" <?php
                     if ($row['publicEntry'] === "false") {
                         echo " checked";

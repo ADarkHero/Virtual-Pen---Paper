@@ -239,17 +239,15 @@ function databaseFun($dbname, $pdo) {
 function updatePictures($pictoupdate, $pdo, $id, $dbname) {
         //Update pictures
         $target_dir = "img/".$dbname."/";
-        $target_file = $target_dir . basename($_FILES[$pictoupdate]["name"]);
-        $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+        $target_file = $target_dir . uniqid() . basename($_FILES[$pictoupdate]["name"]);
         // Check if image file is a actual image or fake image
         error_reporting(0);
         $check = getimagesize($_FILES[$pictoupdate]["tmp_name"]);
         if ($check !== false) {
             if (move_uploaded_file($_FILES[$pictoupdate]["tmp_name"], $target_file)) {
-                echo "The file " . basename($_FILES[$pictoupdate]["name"]) . " has been uploaded.";
-                $sql = "UPDATE ".$dbname." SET " . $pictoupdate . " = '" . basename($_FILES[$pictoupdate]["name"]) . "' WHERE ID = " . $id;
+                $sql = "UPDATE ".$dbname." SET " . $pictoupdate . " = '" . $target_file . "' WHERE ID = " . $id;
                 $statement = $pdo->prepare($sql);
-                $result = $statement->execute();
+                $statement->execute();
             } else {
                 echo "Sorry, there was an error uploading your file.";
             }

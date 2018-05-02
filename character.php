@@ -23,21 +23,21 @@ include("templates/header.inc.php");
                 <div class="col-md-2 form" data-toggle="tooltip" title="It's your character!">
                     <?php
                     if ($row['mainPicture'] !== "") {
-                        echo '<a href="img/characters/' . $row['mainPicture'] . '" target="_blank" class="characterpicture"><center><img src="img/characters/' . $row['mainPicture'] . '" data-toggle="tooltip"></img></center></a>';
+                        echo '<a href="' . $row['mainPicture'] . '" target="_blank" class="characterpicture"><center><img src="' . $row['mainPicture'] . '" data-toggle="tooltip"></img></center></a>';
                     }
                     ?>
                 </div>
                 <div class="col-md-2 form" data-toggle="tooltip" title="It's your character!">
                     <?php
                     if ($row['secondaryPicture'] !== "") {
-                        echo '<a href="img/characters/' . $row['secondaryPicture'] . '" target="_blank" class="characterpicture"><center><img src="img/characters/' . $row['secondaryPicture'] . '" data-toggle="tooltip" title="It\'s your character!"></img></center></a>';
+                        echo '<a href="' . $row['secondaryPicture'] . '" target="_blank" class="characterpicture"><center><img src="' . $row['secondaryPicture'] . '" data-toggle="tooltip" title="It\'s your character!"></img></center></a>';
                     }
                     ?>
                 </div>
                 <div class="col-md-2 form" data-toggle="tooltip" title="It's your character!">
                     <?php
                     if ($row['tertiaryPicture'] !== "") {
-                        echo '<a href="img/characters/' . $row['tertiaryPicture'] . '" target="_blank" class="characterpicture"><center><img src="img/characters/' . $row['tertiaryPicture'] . '" data-toggle="tooltip" title="It\'s your character!"></img></center></a>';
+                        echo '<a href="' . $row['tertiaryPicture'] . '" target="_blank" class="characterpicture"><center><img src="' . $row['tertiaryPicture'] . '" data-toggle="tooltip" title="It\'s your character!"></img></center></a>';
                     }
                     ?>
                 </div>
