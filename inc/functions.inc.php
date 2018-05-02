@@ -27,8 +27,10 @@ function check_user_read($allowread) {
         } else { //Token correct
             //Set new token
             $neuer_securitytoken = random_string();
-            $insert = $pdo->prepare("UPDATE securitytokens SET securitytoken = :securitytoken WHERE identifier = :identifier");
-            $insert->execute(array('securitytoken' => sha1($neuer_securitytoken), 'identifier' => $identifier));
+            $insert = $pdo->prepare("UPDATE securitytokens SET securitytoken = "
+                    . ":securitytoken WHERE identifier = :identifier");
+            $insert->execute(array('securitytoken' => sha1($neuer_securitytoken), 
+                'identifier' => $identifier));
             setcookie("identifier", $identifier, time() + (3600 * 24 * 365)); //1 year
             setcookie("securitytoken", $neuer_securitytoken, time() + (3600 * 24 * 365)); //1 year
             //Log user in
@@ -67,8 +69,7 @@ function random_string() {
     } else if (function_exists('mcrypt_create_iv')) {
         $bytes = mcrypt_create_iv(16, MCRYPT_DEV_URANDOM);
         $str = bin2hex($bytes);
-    } else {
-        //Replace your_secret_string with a string of your choice (>12 characters)
+    } else {                                                                    //Replace your_secret_string with a string of your choice (>12 characters)
         $str = md5(uniqid('your_secret_string', true));
     }
     return $str;
@@ -78,7 +79,8 @@ function random_string() {
  * Returns the URL to the site without the script name
  */
 function getSiteURL() {
-    $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
+    $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' 
+            || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
     return $protocol . $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF']) . '/';
 }
 
@@ -96,7 +98,7 @@ function checkViewRights($dbname, $pdo, $user) {
     $readonly = false;
     $notPublic = false;
 
-    if (isset($_GET['id'])) {     //User wants to view/edit a character
+    if (isset($_GET['id'])) {                                                   //User wants to view/edit a character
         $id = $_GET['id'];
         $owncharacters = "";
         
@@ -105,15 +107,16 @@ function checkViewRights($dbname, $pdo, $user) {
             $statement = $pdo->prepare($sql);
             $result = $statement->execute();
             while ($raw = $statement->fetch()) {
-                $owncharacters = $owncharacters.$raw['id'].",, ";
+                $owncharacters = $owncharacters.$raw['id'].", ";                
             }
-            $owncharacters = substr($owncharacters, 0, -3); //Cut last comma
-            $owch = explode(", ", $owncharacters);  
+            $owncharacters = substr($owncharacters, 0, -2);                     //Cut last comma
+            $owch = explode(", ", $owncharacters);   
             
-            
-            $sql = "SELECT publicEntry, account, members FROM " . $dbname . " WHERE id = " . $id;
+            $sql = "SELECT publicEntry, account, members, onlyAdminMode "
+                    . "FROM " . $dbname . " WHERE id = " . $id;
         }else{
-            $sql = "SELECT publicEntry, account FROM " . $dbname . " WHERE id = " . $id;
+            $sql = "SELECT publicEntry, account "
+                    . "FROM " . $dbname . " WHERE id = " . $id;
         }
         
         $statement = $pdo->prepare($sql);
@@ -121,15 +124,21 @@ function checkViewRights($dbname, $pdo, $user) {
                   
 
         while ($row = $statement->fetch()) {
-            if (isset($user['id']) && $row['account'] == $user['id']) { //The logged in user owns the entry
+            if (isset($user['id']) && $row['account'] == $user['id']) {         //The logged in user owns the entry
                 $readonly = false;
                 break;
-            } else if ($row['publicEntry'] === "true") { //Is the character/group public?
+            } else if ($row['publicEntry'] === "true") {                        //Is the character/group public?
                 $readonly = true;
                 break;
-            } else if(strpos_arr($row['members'], $owch) !== false){ //Is the character part of the group?
-                $readonly = true;
-                break;
+            } else if(strpos_arr($row['members'], $owch) !== false){            //Is the character part of the group?
+                if($row['onlyAdminMode'] === "false"){                           //Is everyone allowed to edit?
+                    $readonly = false;
+                    break;
+                }
+                else{
+                    $readonly = true;
+                    break;
+                }  
             } 
             else {
                 $notPublic = true;

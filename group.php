@@ -88,6 +88,14 @@ include("templates/header.inc.php");
             </table>
             <?php } ?>
             
+            <!-- DESCRIPTION -->
+            <div class="form-group row">
+                <div class="col-md-12 form" data-toggle="tooltip" title="Description">
+                    <input class="form-control" value="Description" disabled>
+                    <textarea class="form-control" rows="5" name="description" placeholder="Description" ><?php echo $row['description']; ?></textarea>
+                </div>    
+            </div>
+            
             <?php if ($readonly == false) { ?>
 
                 <!-- PICTURE UPLOAD -->

@@ -27,11 +27,12 @@ $id =  $user['id'];
 $sql = "SELECT id FROM characters  WHERE account = '".$id."' ORDER BY id";
 $statement = $pdo->prepare($sql);
 $result = $statement->execute();
-$sql = "SELECT id, groupname FROM groups  WHERE ";
+$sql = "SELECT id, groupname FROM groups WHERE ";
 while($raw = $statement->fetch()) {
-	$sql = $sql."members LIKE '%".$raw['id'].",%' OR ";
+	$sql = $sql."members LIKE '%".$raw['id'].",%' OR members LIKE '%, ".$raw['id']."%' OR ";
 }
 $sql = $sql." account = '".$id."' ORDER BY id";
+echo $sql;
 $statement = $pdo->prepare($sql);
 $result = $statement->execute();
 while($row = $statement->fetch()) {
