@@ -332,6 +332,14 @@ include("templates/header.inc.php");
             </div>
 
             <?php if ($readonly == false) { ?>
+            <!-- SECRET DESCRIPTION -->
+            <div class="form-group row">
+                <div class="col-md-12 form" data-toggle="tooltip" title="You are the only one, who can see this.">
+                    <input class="form-control" value="Secret notes" disabled>
+                    <textarea class="form-control" rows="3" name="secret" placeholder="Secret notes" ><?php echo $row['secret']; ?></textarea>
+                </div>    
+            </div>
+            
                 <!-- PICTURE UPLOAD -->
                 <div class="form-group row">
                     <?php if (isset($_GET["id"])) { ?>

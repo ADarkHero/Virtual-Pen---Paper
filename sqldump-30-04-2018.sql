@@ -71,7 +71,8 @@ CREATE TABLE `characters` (
   `natureTalents` text NOT NULL,
   `knowledgeTalents` text NOT NULL,
   `craftTalents` text NOT NULL,
-  `publicEntry` varchar(10) DEFAULT NULL
+  `publicEntry` varchar(10) DEFAULT NULL,
+  `secret` text NOT NULL,
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -114,7 +115,8 @@ CREATE TABLE `groups` (
   `tertiaryPicture` varchar(255) NOT NULL,
   `publicEntry` varchar(10) NOT NULL,
   `members` text,
-  `onlyAdminMode` varchar(10) NOT NULL
+  `onlyAdminMode` varchar(10) NOT NULL,
+  `description` text,
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --

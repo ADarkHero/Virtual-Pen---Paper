@@ -32,7 +32,6 @@ while($raw = $statement->fetch()) {
 	$sql = $sql."members LIKE '%".$raw['id'].",%' OR members LIKE '%, ".$raw['id']."%' OR ";
 }
 $sql = $sql." account = '".$id."' ORDER BY id";
-echo $sql;
 $statement = $pdo->prepare($sql);
 $result = $statement->execute();
 while($row = $statement->fetch()) {
