@@ -43,11 +43,11 @@ include("templates/header.inc.php");
                 </div>
                 <div class="col-md-1 form">
                     <?php
-                    if ($row['weapon'] !== "") {
+                    if ($row['weapon'] !== "" && $row['weapon'] !== ".") {
                         echo '<span id="weapon" class="weaponimage"><center><img src="img/weapon/' . $row['weapon'] . '" data-toggle="tooltip" title="Weapon: ' . substr($row['weapon'], 0, -4) . '"></img></center></span>';
                     }
                     echo '<br />';
-                    if ($row['subweapon'] !== "") {
+                    if ($row['subweapon'] !== "" && $row['subweapon'] !== ".") {
                         echo '<span id="subweapon" class="weaponimage"><center><img src="img/weapon/' . $row['subweapon'] . '" data-toggle="tooltip" title="Subweapon: ' . substr($row['subweapon'], 0, -4) . '"></img></center></span>';
                     }
                     ?>
